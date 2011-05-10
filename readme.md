@@ -7,6 +7,7 @@ Before you start
 ----------------
 
 You need to create a config.rb file containing the following globals:
+
 * API_KEY: your private Linode api key
 * LINODE_IP: the IP of the Linode instance you are administering (for DNS config)
 * ADMIN_EMAIL: Your administrator email address (for DNS config)
