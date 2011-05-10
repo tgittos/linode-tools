@@ -12,6 +12,9 @@ if [ ! -d "/srv/www/$1" ]; then
 	mkdir /srv/www/$1/cgi-bin
 	mkdir /srv/www/$1/private
 	mkdir /srv/www/$1/public
+	chown www-data /srv/www/$1 -R
+	chgrp www-data /srv/www/$1 -R
+	chmod g+w /srv/www/$1 -R
 fi
 touch /srv/www/$1/logs/access.log
 touch /srv/www/$1/logs/error.log
