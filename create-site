@@ -1,0 +1,34 @@
+#! /bin/sh
+
+# Arguments:
+# $1 - domain to host
+
+# Create a home directory and log files
+echo "Setting up $1..."
+if [ ! -d "/srv/www/$1" ]; then
+	mkdir /srv/www/$1
+	mkdir /srv/www/$1/logs
+	mkdir /srv/www/$1/backup
+	mkdir /srv/www/$1/cgi-bin
+	mkdir /srv/www/$1/private
+	mkdir /srv/www/$1/public
+fi
+touch /srv/www/$1/logs/access.log
+touch /srv/www/$1/logs/error.log
+if [ ! -f "www/$1/public/index.html" ]; then
+  touch /srv/www/$1/public/index.html
+  echo "<html><head><title>$1</title></head><body><h1>$1</h1></body></html>" > /srv/www/$1/public/index.html
+fi
+
+# Create an nginx entry based on a base entry
+if [ ! -f "/etc/nginx/sites-available/$1" ]; then
+	sudo cp /etc/nginx/sites-available/base /etc/nginx/sites-enabled/$1
+	sudo sed -i "s/example.com/$1/g" /etc/nginx/sites-enabled/$1
+else
+	sudo mv /etc/nginx/sites-available/$1 /etc/nginx/sites-enabled/$1
+fi
+
+# Restart ngingx
+echo "Restarting nginx..."
+sudo /etc/init.d/nginx stop
+sudo /etc/init.d/nginx start
